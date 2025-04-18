@@ -9,7 +9,7 @@ const server = net.createServer((socket) => {
   socket.on("data",(data)=>{
     console.log(data);
     const path = data.toString().split(" ")[1];
-    console.log(data.toString())
+    console.log(data.toString().length)
     socket.write("HTTP/1.1 200 OK\r\n\r\n");
 
   })
