@@ -43,7 +43,7 @@ const server = net.createServer((socket) => {
         else{
           contentLength = UserAgent.length;
           content = UserAgent;
-          socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${UserAgent.length}\r\n\r\n${content}`);
+          socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: 19\r\n\r\n${content}`);
         }
 
       }
