@@ -8,6 +8,7 @@ const server = net.createServer((socket) => {
   
   socket.on("data",(data)=>{
 
+    console.log( "data", data.toString());
     const httpString = cleanString(data.toString());
     const httpStringArray = httpString.toString().split(" ");
     const Method = httpStringArray[0];
@@ -58,7 +59,7 @@ const server = net.createServer((socket) => {
  server.listen(4221, "localhost");
 
 function cleanString(str){
-    return str.replace(/\r\n/g, ' ').replace(/\n/g, ' ').replace(/\r/g, ' ');
+    return str.replace('*/*','').replace(/\r\n/g, ' ').replace(/\n/g, ' ').replace(/\r/g, ' ');
  }
 
 
