@@ -8,14 +8,12 @@ const server = net.createServer((socket) => {
   
   socket.on("data",(data)=>{
 
-    console.log( "data", data.toString());
     const httpString = cleanString(data.toString());
     const httpStringArray = httpString.toString().split(" ");
     const Method = httpStringArray[0];
     const param = httpStringArray[1];
     const host = httpStringArray[4];
-    const UserAgent = httpStringArray[8];
-    console.log(httpStringArray);
+    const UserAgent = httpStringArray[6];
 
     const indexSlash = param.indexOf("/");
 
