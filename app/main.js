@@ -14,7 +14,22 @@ const server = net.createServer((socket) => {
       socket.write("HTTP/1.1 200 OK\r\n\r\n");
     }
     else {
-      socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+      const otherPath = path.substring(indexSlash + 1).split("/");
+      const indexEcho = otherPath.indexOf("echo");
+      const contentType="text/plain";
+      var contentLength = 0;
+      var content ="";
+      if(indexEcho !== -1){
+        const afterEchoPath = otherPath[indexEcho + 1];
+        content = afterEchoPath;
+        contentLength = content.length;
+        if(afterEchoPath !== undefined){
+          socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${contentLength}\r\n\r\n${content}`);
+        }
+      } else {
+        socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+
+      }
     }
   })
    socket.on("close", () => {
