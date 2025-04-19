@@ -23,7 +23,7 @@ const server = net.createServer((socket) => {
     else {
       const otherPath = param.substring(indexSlash + 1).split("/");
       const indexEcho = otherPath.indexOf("echo");
-      const indexAgent = otherPath.indexOf("user-Agent");
+      const indexAgent = otherPath.indexOf("user-agent");
       const contentType="text/plain";
       var contentLength = 0;
       var content ="";
@@ -37,7 +37,7 @@ const server = net.createServer((socket) => {
         }
       } else {
 
-        if(indexAgent !== -1){
+        if(indexAgent === -1){
           socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
         }
         else{
