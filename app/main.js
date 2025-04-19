@@ -8,17 +8,26 @@ const server = net.createServer((socket) => {
   
   socket.on("data",(data)=>{
 
-    const path = data.toString().split(" ")[1];
-    const indexSlash = path.indexOf("/");
-    if(indexSlash === path.length -1 || indexSlash === -1){
+    const httpString = cleanString(data.toString());
+    const httpStringArray = httpString.toString().split(" ");
+    const Method = httpStringArray[0];
+    const param = httpStringArray[1];
+    const host = httpStringArray[4];
+    const UserAgent = httpStringArray[8];
+
+    const indexSlash = param.indexOf("/");
+
+    if(indexSlash === param.length -1 || indexSlash === -1){
       socket.write("HTTP/1.1 200 OK\r\n\r\n");
     }
     else {
-      const otherPath = path.substring(indexSlash + 1).split("/");
+      const otherPath = param.substring(indexSlash + 1).split("/");
       const indexEcho = otherPath.indexOf("echo");
+      const indexAgent = otherPath.indexOf("user-Agent");
       const contentType="text/plain";
       var contentLength = 0;
       var content ="";
+
       if(indexEcho !== -1){
         const afterEchoPath = otherPath[indexEcho + 1];
         content = afterEchoPath;
@@ -27,7 +36,15 @@ const server = net.createServer((socket) => {
           socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${contentLength}\r\n\r\n${content}`);
         }
       } else {
-        socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+
+        if(indexAgent !== -1){
+          socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+        }
+        else{
+          contentLength = UserAgent.length;
+          content = UserAgent;
+          socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${contentLength}\r\n\r\n${content}`);
+        }
 
       }
     }
@@ -38,3 +55,9 @@ const server = net.createServer((socket) => {
  });
 
  server.listen(4221, "localhost");
+
+function cleanString(str){
+    return str.replace(/\r\n/g, ' ').replace(/\n/g, ' ').replace(/\r/g, ' ');
+ }
+
+
