@@ -14,6 +14,7 @@ const server = net.createServer((socket) => {
     const param = httpStringArray[1];
     const host = httpStringArray[4];
     const UserAgent = httpStringArray[8];
+    console.log(UserAgent);
 
     const indexSlash = param.indexOf("/");
 
