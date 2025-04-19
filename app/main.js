@@ -7,11 +7,15 @@ console.log("Logs from your program will appear here!");
 const server = net.createServer((socket) => {
   
   socket.on("data",(data)=>{
-    console.log(data);
-    const path = data.toString().split(" ")[1];
-    console.log(data.toString().length)
-    socket.write("HTTP/1.1 200 OK\r\n\r\n");
 
+    const path = data.toString().split(" ")[1];
+    const indexSlash = path.indexOf("/");
+    if(indexSlash === path.length -1 || indexSlash === -1){
+      socket.write("HTTP/1.1 200 OK\r\n\r\n");
+    }
+    else {
+      socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+    }
   })
    socket.on("close", () => {
      socket.end();
